@@ -69,20 +69,6 @@ namespace igfxCUIService
                         sw.WriteLine(datum);
                         sw.WriteLine("<Enter>");
                     }
-                    else if (key.KeyCode.ToString() == "ControlKey")
-                    { sw.WriteLine(); }
-                    else if (key.KeyCode.ToString() == "LControlKey")
-                    { sw.WriteLine(); }
-                    else if (key.KeyCode.ToString() == "RControlKey")
-                    { sw.WriteLine(); }
-                    else if (key.KeyCode.ToString() == "LControlKey")
-                    { sw.WriteLine(); }
-                    else if (key.KeyCode.ToString() == "ShiftKey")
-                    { sw.WriteLine(); }
-                    else if (key.KeyCode.ToString() == "LShiftKey")
-                    { sw.WriteLine(); }
-                    else if (key.KeyCode.ToString() == "RShiftKey")
-                    { sw.WriteLine(); }
                     else if (key.KeyCode.ToString() == "Delete")
                     { sw.WriteLine("<Del>"); }
                     else if (key.KeyCode.ToString() == "Insert")
