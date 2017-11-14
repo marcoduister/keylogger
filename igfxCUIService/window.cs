@@ -9,7 +9,8 @@ namespace igfxCUIService
 {
     class window
     {
-        #region getActiveWindows
+
+        #region variable+ dll
 
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
@@ -17,6 +18,10 @@ namespace igfxCUIService
 
         [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+        #endregion
+
+        #region getActiveWindows
 
         public static string GetActiveWindowTitle()
         {
@@ -31,5 +36,6 @@ namespace igfxCUIService
             return null;
         }
         #endregion
+
     }
 }

