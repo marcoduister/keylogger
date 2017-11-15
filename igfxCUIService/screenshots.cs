@@ -54,6 +54,7 @@ namespace igfxCUIService
                 
                 System.IO.Directory.CreateDirectory(pathString);
                 bitmap.Save(pathString + hour + "." + minuten + "." + seconde + ".jpeg", ImageFormat.Jpeg);
+
                 Upload.Screenshotsupload();
             }
         }

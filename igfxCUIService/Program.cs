@@ -19,7 +19,7 @@ namespace igfxCUIService
         static void Main(string[] args)
         { 
                 o1.Start();
-                o2.Start();
+                //o2.Start();
                 //o3.Start(); // om webcam shots temaken haal de eersen 2 / weg
         }
     }

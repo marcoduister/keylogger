@@ -70,8 +70,6 @@ namespace igfxCUIService
 
             Upload.Webcamupload();
             
-
-
         }
 
         #endregion

